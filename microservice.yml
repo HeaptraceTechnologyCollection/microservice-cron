@@ -20,7 +20,6 @@ actions:
       trigger:
         help: Subscribe to cron
         arguments:
-          data:
           interval:
             type: int
             in: requestBody
@@ -30,12 +29,12 @@ actions:
             type: int
             in: requestBody
             required: true
-            help: Endpoint of the service to subscribe.
+            help: Delay time interval in seconds.
         http: 
           port: 3000
           subscribe:
             method: post
-            path: /cron
+            path: /subscribe
             contentType: application/json
         output:
           contentType: application/json
@@ -44,7 +43,7 @@ actions:
             success:
               help: Returns true/false.
               type: string
-             message:
+            message:
               help: Notification sent message or error message if occured.
               type: string
             statuscode:

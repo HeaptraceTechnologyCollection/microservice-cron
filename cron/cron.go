@@ -15,11 +15,11 @@ import (
 )
 
 type Subscribe struct {
-	Data           map[string]string `json:"data"`
-	Endpoint       string            `json:"target"`
-	Id             string            `json:"id"`
-	Interval       int               `json:"interval"`
-	Delay_Interval int               `json:"delay_interval"`
+	Data           interface{} `json:"data"`
+	Endpoint       string      `json:"endpoint"`
+	Id             string      `json:"id"`
+	Interval       int64       `json:"interval"`
+	Delay_Interval int64       `json:"delay_interval"`
 }
 type Message struct {
 	Success    string `json:"success"`
@@ -38,12 +38,17 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 		result.WriteErrorResponse(responseWriter, errr)
 		return
 	}
-	interval := "@every 0h0m" + string(listner.Interval) + "s"
-	fmt.Println(interval)
-	if listner.Delay_Interval > 0 {
-		delaytime := time.Second * time.Duration(listner.Delay_Interval)
-		time.Sleep(delaytime)
-	}
+	dynamic_value := listner.Data.(map[string]interface{})
+
+	dyn_interval := dynamic_value["interval"].(float64)
+	s := fmt.Sprintf("%f", dyn_interval)
+	interval := "@every 0h0m" + s + "s"
+
+	fmt.Println(listner.Endpoint)
+	// if listner.Delay_Interval > 0 {
+	// 	delaytime := time.Second * time.Duration(listner.Delay_Interval)
+	// 	time.Sleep(delaytime)
+	// }
 	client.AddFunc(interval, func() {
 
 		t, err := cloudevents.NewHTTPTransport(
@@ -70,6 +75,7 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 				Source:      cloudevents.URLRef{URL: *source},
 				ContentType: &contentType,
 				EventID:     listner.Id,
+				EventType:   "trigger",
 			}.AsV01(),
 			Data: listner.Data,
 		}

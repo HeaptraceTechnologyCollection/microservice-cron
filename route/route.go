@@ -21,7 +21,7 @@ var routes = Routes{
 	Route{
 		"Cron",
 		"POST",
-		"/cron",
+		"/subscribe",
 		cron.TriggerCron,
 	},
 }
