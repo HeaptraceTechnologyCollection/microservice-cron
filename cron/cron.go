@@ -1,4 +1,4 @@
-package messaging
+package cron
 
 import (
 	"context"
@@ -28,7 +28,7 @@ type Message struct {
 }
 
 //Cron service
-func Cron(responseWriter http.ResponseWriter, request *http.Request) {
+func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 	client := cron.New()
 	decoder := json.NewDecoder(request.Body)
 

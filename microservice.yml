@@ -17,7 +17,7 @@ actions:
   cron:
     help: Time-based job scheduler
     events:
-      start:
+      trigger:
         help: Subscribe to cron
         arguments:
           data:
@@ -27,7 +27,7 @@ actions:
             required: true
             help: Time interval in seconds.
           delay_interval:
-            type: string
+            type: int
             in: requestBody
             required: true
             help: Endpoint of the service to subscribe.

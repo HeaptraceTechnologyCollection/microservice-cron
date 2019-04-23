@@ -22,9 +22,9 @@ omg build
 
 ### CLI
 
-##### Create and save user
+##### Cron Trigger
 ```sh
-$ omg run createuser -a user_id=<USER_ID> -a email=<EMAIL_ADDRESS> -a phone=<PHONE_NUMBER> -a name=<USER_NAME> -a custom_attributes=<CUSTOM_ATTRIBUTES> -a companies=<COMPANIES_LIST> -e ACCESS_TOKEN=<ACCESS_TOKEN>
+$  omg subscribe cron trigger -a interval=<INTERVAL> -e delay_interval=<DELAY_INTERVAL>
 ```
 ## License
 ### [MIT](https://choosealicense.com/licenses/mit/)
