@@ -44,7 +44,7 @@ actions:
               help: Returns true/false.
               type: string
             message:
-              help: Notification sent message or error message if occured.
+              help: Notification sent message or error message if occurred.
               type: string
             statuscode:
               help: Returns http status code.
