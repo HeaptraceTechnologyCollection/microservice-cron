@@ -1,0 +1,53 @@
+omg: 1
+lifecycle:
+  startup:
+    command: ["microservice-cron"]
+info:
+  version: 1.0.0
+  title: Cron
+  description: This is an cron service
+  contact:
+    name: Rohit Shetty
+    url: https://github.com/ht68rohit
+    email: rohits@heaptrace.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+actions:
+  cron:
+    help: Time-based job scheduler
+    events:
+      start:
+        help: Subscribe to cron
+        arguments:
+          data:
+          interval:
+            type: int
+            in: requestBody
+            required: true
+            help: Time interval in seconds.
+          delay_interval:
+            type: string
+            in: requestBody
+            required: true
+            help: Endpoint of the service to subscribe.
+        http: 
+          port: 3000
+          subscribe:
+            method: post
+            path: /cron
+            contentType: application/json
+        output:
+          contentType: application/json
+          type: object
+          properties:
+            success:
+              help: Returns true/false.
+              type: string
+             message:
+              help: Notification sent message or error message if occured.
+              type: string
+            statuscode:
+              help: Returns http status code.
+              type: int
+
