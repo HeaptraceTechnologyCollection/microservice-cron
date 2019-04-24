@@ -14,10 +14,10 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT
 actions:
-  cron:
+  event:
     help: Time-based job scheduler
     events:
-      trigger:
+      triggers:
         help: Subscribe to cron
         arguments:
           interval:
@@ -28,7 +28,7 @@ actions:
           initial_delay:
             type: int
             in: requestBody
-            required: true
+            required: false
             help: Delay time interval in seconds.
         http: 
           port: 3000
@@ -36,17 +36,3 @@ actions:
             method: post
             path: /subscribe
             contentType: application/json
-        output:
-          contentType: application/json
-          type: object
-          properties:
-            success:
-              help: Returns true/false.
-              type: string
-            message:
-              help: Notification sent message or error message if occurred.
-              type: string
-            statuscode:
-              help: Returns http status code.
-              type: int
-
