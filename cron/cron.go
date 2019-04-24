@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 
 	cloudevents "github.com/cloudevents/sdk-go"
@@ -15,11 +16,11 @@ import (
 )
 
 type Subscribe struct {
-	Data          interface{} `json:"data"`
-	Endpoint      string      `json:"endpoint"`
-	Id            string      `json:"id"`
-	Interval      int64       `json:"interval"`
-	Initial_Delay int64       `json:"initial_delay"`
+	Data         interface{} `json:"data"`
+	Endpoint     string      `json:"endpoint"`
+	Id           string      `json:"id"`
+	Interval     int64       `json:"interval"`
+	InitialDelay int64       `json:"initial_delay"`
 }
 type Message struct {
 	Success    string `json:"success"`
@@ -32,27 +33,35 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 	client := cron.New()
 	decoder := json.NewDecoder(request.Body)
 
-	var listner Subscribe
-	errr := decoder.Decode(&listner)
+	var listener Subscribe
+	errr := decoder.Decode(&listener)
 	if errr != nil {
 		result.WriteErrorResponse(responseWriter, errr)
 		return
 	}
-	dynamic_value := listner.Data.(map[string]interface{})
+	intervalValue := listener.Data.(map[string]interface{})
 
-	dyn_interval := dynamic_value["interval"].(float64)
-	s := fmt.Sprintf("%f", dyn_interval)
-	interval := "@every 0h0m" + s + "s"
+	secsInterval := intervalValue["interval"].(float64)
+	seconds := fmt.Sprintf("%f", secsInterval)
+	interval := "@every 0h0m" + seconds + "s"
 
-	fmt.Println(listner.Endpoint)
-	// if listner.Delay_Interval > 0 {
-	// 	delaytime := time.Second * time.Duration(listner.Delay_Interval)
-	// 	time.Sleep(delaytime)
-	// }
+	fmt.Println(listener.Endpoint)
+
+	secsDelay := intervalValue["initial_delay"].(float64)
+	delay := fmt.Sprintf("%f", secsDelay)
+
+	if delay != "" {
+		i, err := strconv.Atoi(delay)
+		if err != nil {
+			fmt.Println(err)
+		}
+		delaytime := time.Second * time.Duration(i)
+		time.Sleep(delaytime)
+	}
 	client.AddFunc(interval, func() {
 
 		t, err := cloudevents.NewHTTPTransport(
-			cloudevents.WithTarget(listner.Endpoint),
+			cloudevents.WithTarget(listener.Endpoint),
 			cloudevents.WithStructuredEncoding(),
 		)
 		if err != nil {
@@ -67,17 +76,17 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 			log.Printf("failed to create client, %v", err)
 			return
 		}
-		fmt.Println("Data  ::::", listner.Data)
+		fmt.Println("Data  ::::", listener.Data)
 		contentType := "application/json"
 		source, err := url.Parse("cron.event.subscribe")
 		event := cloudevents.Event{
 			Context: cloudevents.EventContextV01{
 				Source:      cloudevents.URLRef{URL: *source},
 				ContentType: &contentType,
-				EventID:     listner.Id,
+				EventID:     listener.Id,
 				EventType:   "trigger",
 			}.AsV01(),
-			Data: listner.Data,
+			Data: listener.Data,
 		}
 
 		fmt.Println(event)
@@ -98,11 +107,9 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 			log.Printf("event sent at %s", time.Now())
 		}
 	})
-
-	client.Start()
-
-	message := Message{"true", "Cron subscription started", http.StatusOK}
+	message := Message{"true", "Cron triggered", http.StatusOK}
 	bytes, _ := json.Marshal(message)
 	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
+	client.Start()
 
 }
