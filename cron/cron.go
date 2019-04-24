@@ -15,11 +15,11 @@ import (
 )
 
 type Subscribe struct {
-	Data           interface{} `json:"data"`
-	Endpoint       string      `json:"endpoint"`
-	Id             string      `json:"id"`
-	Interval       int64       `json:"interval"`
-	Delay_Interval int64       `json:"delay_interval"`
+	Data          interface{} `json:"data"`
+	Endpoint      string      `json:"endpoint"`
+	Id            string      `json:"id"`
+	Interval      int64       `json:"interval"`
+	Initial_Delay int64       `json:"initial_delay"`
 }
 type Message struct {
 	Success    string `json:"success"`
