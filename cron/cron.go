@@ -13,9 +13,10 @@ import (
 )
 
 type Subscribe struct {
-	Data     Data   `json:"data"`
-	Endpoint string `json:"endpoint"`
-	Id       string `json:"id"`
+	Data      Data   `json:"data"`
+	Endpoint  string `json:"endpoint"`
+	Id        string `json:"id"`
+	IsTesting bool   `json:"istesting"`
 }
 
 type Data struct {
@@ -27,6 +28,11 @@ type RequestPayload struct {
 	Data     map[string]string `json:"data"`
 	Endpoint string            `json:"endpoint"`
 	Id       string            `json:"id"`
+}
+type Message struct {
+	Success    string `json:"success"`
+	Message    string `json:"message"`
+	StatusCode int    `json:"statuscode"`
 }
 
 //Cron service
@@ -42,7 +48,8 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 		result.WriteErrorResponse(responseWriter, errr)
 		return
 	}
-	stringInterval := strconv.FormatInt(listener.Data.Interval, 16)
+	//stringInterval := strconv.FormatInt(listener.Data.Interval, 16)
+	stringInterval := strconv.Itoa(int(listener.Data.Interval))
 	interval := "@every 0h0m" + stringInterval + "s"
 	fmt.Println(interval)
 	if listener.Data.InitialDelay > 0 {
@@ -71,5 +78,10 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 		}
 	})
 	client.Start()
-
+	message := Message{"true", "Cron event triggered", http.StatusOK}
+	bytes, _ := json.Marshal(message)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
+	if listener.IsTesting == true {
+		client.Stop()
+	}
 }
