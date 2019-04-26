@@ -2,6 +2,8 @@
 An OMG service for Cron, it is a time-based job scheduler in Unix-like computer operating systems.
 
 [![Open Microservice Guide](https://img.shields.io/badge/OMG-enabled-brightgreen.svg?style=for-the-badge)](https://microservice.guide)
+[![Build Status](https://travis-ci.org/heaptracetechnology/microservice-cron.svg?branch=master)](https://travis-ci.org/heaptracetechnology/microservice-cron)
+[![codecov](https://codecov.io/gh/heaptracetechnology/microservice-cron/branch/master/graph/badge.svg)](https://codecov.io/gh/heaptracetechnology/microservice-cron)
 
 
 ## [OMG](hhttps://microservice.guide) CLI
