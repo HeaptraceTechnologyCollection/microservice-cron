@@ -48,10 +48,8 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 		result.WriteErrorResponse(responseWriter, errr)
 		return
 	}
-	//stringInterval := strconv.FormatInt(listener.Data.Interval, 16)
 	stringInterval := strconv.Itoa(int(listener.Data.Interval))
 	interval := "@every 0h0m" + stringInterval + "s"
-	fmt.Println(interval)
 	if listener.Data.InitialDelay > 0 {
 
 		delaytime := time.Second * time.Duration(listener.Data.InitialDelay)
@@ -60,7 +58,6 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 	client.AddFunc(interval, func() {
 
 		var request RequestPayload
-
 		requestBody := new(b.Buffer)
 		err := json.NewEncoder(requestBody).Encode(request)
 		if err != nil {
@@ -81,6 +78,7 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 	message := Message{"true", "Cron event triggered", http.StatusOK}
 	bytes, _ := json.Marshal(message)
 	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
+	time.Sleep(10 * time.Second)
 	if listener.IsTesting == true {
 		client.Stop()
 	}
