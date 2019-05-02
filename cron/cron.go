@@ -1,0 +1,85 @@
+package cron
+
+import (
+	b "bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strconv"
+	"time"
+
+	"github.com/heaptracetechnology/microservice-cron/result"
+	"github.com/robfig/cron"  
+)
+
+type Subscribe struct {
+	Data      Data   `json:"data"`
+	Endpoint  string `json:"endpoint"`
+	Id        string `json:"id"`
+	IsTesting bool   `json:"istesting"`
+}
+
+type Data struct {
+	Interval     int64 `json:"interval"`
+	InitialDelay int64 `json:"initial_delay"`
+}
+
+type RequestPayload struct {
+	Data     map[string]string `json:"data"`
+	Endpoint string            `json:"endpoint"`
+	Id       string            `json:"id"`
+}
+type Message struct {
+	Success    string `json:"success"`
+	Message    string `json:"message"`
+	StatusCode int    `json:"statuscode"`
+}
+
+//Cron service
+func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
+
+	hc := http.Client{}
+	client := cron.New()
+	decoder := json.NewDecoder(request.Body)
+
+	var listener Subscribe
+	errr := decoder.Decode(&listener)
+	if errr != nil {
+		result.WriteErrorResponse(responseWriter, errr)
+		return
+	}
+	stringInterval := strconv.Itoa(int(listener.Data.Interval))
+	interval := "@every 0h0m" + stringInterval + "s"
+	if listener.Data.InitialDelay > 0 {
+
+		delaytime := time.Second * time.Duration(listener.Data.InitialDelay)
+		time.Sleep(delaytime)
+	}
+	client.AddFunc(interval, func() {
+
+		var request RequestPayload
+		requestBody := new(b.Buffer)
+		err := json.NewEncoder(requestBody).Encode(request)
+		if err != nil {
+			fmt.Println(" request err :", err)
+		}
+
+		req, errr := http.NewRequest("POST", listener.Endpoint, requestBody)
+		if errr != nil {
+			fmt.Println(" request err :", errr)
+		}
+		req.Header.Set("Content-Type", "application/json")
+		_, errrs := hc.Do(req)
+		if errrs != nil {
+			fmt.Println("Client error", errrs)
+		}
+	})
+	client.Start()
+	message := Message{"true", "Cron event triggered", http.StatusOK}
+	bytes, _ := json.Marshal(message)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
+	time.Sleep(10 * time.Second)
+	if listener.IsTesting == true {
+		client.Stop()
+	}
+}
