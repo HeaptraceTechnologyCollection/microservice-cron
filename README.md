@@ -1,10 +1,7 @@
-# Cron as a microservice
-An OMG service for Cron, it is a time-based job scheduler in Unix-like computer operating systems.
+# Kafta as a microservice
+An OMG service for kafka, it is a message queue serivce.
 
 [![Open Microservice Guide](https://img.shields.io/badge/OMG-enabled-brightgreen.svg?style=for-the-badge)](https://microservice.guide)
-[![Build Status](https://travis-ci.org/heaptracetechnology/microservice-cron.svg?branch=master)](https://travis-ci.org/heaptracetechnology/microservice-cron)
-[![codecov](https://codecov.io/gh/heaptracetechnology/microservice-cron/branch/master/graph/badge.svg)](https://codecov.io/gh/heaptracetechnology/microservice-cron)
-
 
 ## [OMG](hhttps://microservice.guide) CLI
 
@@ -24,9 +21,9 @@ omg build
 
 ### CLI
 
-##### Cron Trigger
+##### Kafka Consume
 ```sh
-$  omg subscribe cron trigger -a interval=<INTERVAL> -a initial_delay=<INITIAL_DELAY>
+$  
 ```
 ## License
 ### [MIT](https://choosealicense.com/licenses/mit/)
@@ -34,9 +31,9 @@ $  omg subscribe cron trigger -a interval=<INTERVAL> -a initial_delay=<INITIAL_D
 ## Docker
 ### Build
 ```
-docker build -t microservice-cron .
+docker build -t microservice-kafka .
 ```
 ### RUN
 ```
-docker run -p 3000:3000 microservice-cron
+docker run -p 3000:3000 microservice-kafka
 ```

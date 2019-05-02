@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/heaptracetechnology/microservice-cron/cron"
+	"github.com/heaptracetechnology/microservice-kafka/message"
 )
 
 type Route struct {
@@ -21,8 +21,14 @@ var routes = Routes{
 	Route{
 		"Cron",
 		"POST",
-		"/subscribe",
-		cron.TriggerCron,
+		"/consume",
+		message.consume,
+	},
+	Route{
+		"Cron",
+		"POST",
+		"/consume",
+		message.produce,
 	},
 }
 
