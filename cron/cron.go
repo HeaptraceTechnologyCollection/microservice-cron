@@ -40,7 +40,6 @@ type Message struct {
 //Cron service
 func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 
-	//hc := http.Client{}
 	client := cron.New()
 	decoder := json.NewDecoder(request.Body)
 
