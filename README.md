@@ -26,7 +26,7 @@ omg build
 
 ##### Cron Trigger
 ```sh
-$  omg subscribe cron trigger -a interval=<INTERVAL> -a initial_delay=<INITIAL_DELAY>
+$  omg subscribe event triggers -a interval=<INTERVAL> -a initial_delay=<INITIAL_DELAY>
 ```
 ## License
 ### [MIT](https://choosealicense.com/licenses/mit/)

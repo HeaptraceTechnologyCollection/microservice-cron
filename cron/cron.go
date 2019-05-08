@@ -1,15 +1,17 @@
 package cron
 
 import (
-	b "bytes"
+	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/cloudevents/sdk-go"
+	"github.com/heaptracetechnology/microservice-cron/result"
+	"github.com/robfig/cron"
+	"log"
 	"net/http"
+	"net/url"
 	"strconv"
 	"time"
-
-	"github.com/heaptracetechnology/microservice-cron/result"
-	"github.com/robfig/cron"  
 )
 
 type Subscribe struct {
@@ -38,7 +40,7 @@ type Message struct {
 //Cron service
 func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 
-	hc := http.Client{}
+	//hc := http.Client{}
 	client := cron.New()
 	decoder := json.NewDecoder(request.Body)
 
@@ -50,35 +52,50 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 	stringInterval := strconv.Itoa(int(listener.Data.Interval))
 	interval := "@every 0h0m" + stringInterval + "s"
-	if listener.Data.InitialDelay > 0 {
-
-		delaytime := time.Second * time.Duration(listener.Data.InitialDelay)
-		time.Sleep(delaytime)
-	}
 	client.AddFunc(interval, func() {
+		if listener.Data.InitialDelay > 0 {
+			delaytime := time.Second * time.Duration(listener.Data.InitialDelay)
+			time.Sleep(delaytime)
+		}
 
-		var request RequestPayload
-		requestBody := new(b.Buffer)
-		err := json.NewEncoder(requestBody).Encode(request)
+		contentType := "application/json"
+		t, err := cloudevents.NewHTTPTransport(
+			cloudevents.WithTarget(listener.Endpoint),
+			cloudevents.WithStructuredEncoding(),
+		)
+
 		if err != nil {
-			fmt.Println(" request err :", err)
+			log.Printf("failed to create transport, %v", err)
+			return
 		}
 
-		req, errr := http.NewRequest("POST", listener.Endpoint, requestBody)
-		if errr != nil {
-			fmt.Println(" request err :", errr)
+		cloudClient, err := cloudevents.NewClient(t,
+			cloudevents.WithTimeNow(),
+		)
+
+		source, err := url.Parse(listener.Endpoint)
+		event := cloudevents.Event{
+			Context: cloudevents.EventContextV01{
+				EventID:     listener.Id,
+				EventType:   "triggers",
+				Source:      cloudevents.URLRef{URL: *source},
+				ContentType: &contentType,
+			}.AsV01(),
+			Data: "",
 		}
-		req.Header.Set("Content-Type", "application/json")
-		_, errrs := hc.Do(req)
-		if errrs != nil {
-			fmt.Println("Client error", errrs)
+		resp, err := cloudClient.Send(context.Background(), event)
+		if err != nil {
+			log.Printf("failed to send: %v", err)
+			fmt.Println(resp)
 		}
+
 	})
+
 	client.Start()
 	message := Message{"true", "Cron event triggered", http.StatusOK}
 	bytes, _ := json.Marshal(message)
 	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
-	time.Sleep(10 * time.Second)
+
 	if listener.IsTesting == true {
 		client.Stop()
 	}
