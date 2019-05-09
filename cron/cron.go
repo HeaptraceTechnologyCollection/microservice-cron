@@ -94,8 +94,9 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 	message := Message{"true", "Cron event triggered", http.StatusOK}
 	bytes, _ := json.Marshal(message)
 	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
-
+	
 	if listener.IsTesting == true {
+		time.Sleep(5 * time.Second)
 		client.Stop()
 	}
 }
