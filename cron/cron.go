@@ -23,7 +23,7 @@ type Subscribe struct {
 
 type Data struct {
 	Interval     int64 `json:"interval"`
-	InitialDelay int64 `json:"initial_delay"`
+	InitialDelay int64 `json:"initialDelay"`
 }
 
 type RequestPayload struct {
