@@ -20,7 +20,7 @@ Curious to [learn more](https://docs.storyscript.io/)?
 ## Usage with [OMG CLI](https://www.npmjs.com/package/omg)
 ##### Cron Trigger
 ```sh
-$  omg subscribe event triggers -a interval=<INTERVAL> -a initial_delay=<INITIAL_DELAY>
+$  omg subscribe event triggers -a interval=<INTERVAL> -a initialDelay=<INITIAL_DELAY>
 ```
 
 **Note**: the OMG CLI requires [Docker](https://docs.docker.com/install/) to be installed.
