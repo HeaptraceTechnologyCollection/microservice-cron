@@ -25,7 +25,7 @@ actions:
             in: requestBody
             required: true
             help: Time interval in seconds.
-          initial_delay:
+          initialDelay:
             type: int
             in: requestBody
             required: false

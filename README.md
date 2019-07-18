@@ -1,42 +1,29 @@
-# Cron as a microservice
-An OMG service for Cron, it is a time-based job scheduler in Unix-like computer operating systems.
+# _Cron_ OMG Microservice
 
-[![Open Microservice Guide](https://img.shields.io/badge/OMG-enabled-brightgreen.svg?style=for-the-badge)](https://microservice.guide)
+[![Open Microservice Guide](https://img.shields.io/badge/OMG%20Enabled-👍-green.svg?)](https://microservice.guide)
 [![Build Status](https://travis-ci.com/omg-services/cron.svg?branch=master)](https://travis-ci.com/omg-services/cron)
 [![codecov](https://codecov.io/gh/omg-services/cron/branch/master/graph/badge.svg)](https://codecov.io/gh/omg-services/cron)
 
+An OMG service for Cron, it is a time-based job scheduler in Unix-like computer operating systems.
 
-## [OMG](hhttps://microservice.guide) CLI
+## Direct usage in [Storyscript](https://storyscript.io/):
 
-### OMG
+```coffee
+>>> cron subscribe
 
-* omg validate
 ```
-omg validate
-```
-* omg build
-```
-omg build
-```
-### Test Service
 
-* Test the service by following OMG commands
+Curious to [learn more](https://docs.storyscript.io/)?
 
-### CLI
+✨🍰✨
 
+## Usage with [OMG CLI](https://www.npmjs.com/package/omg)
 ##### Cron Trigger
 ```sh
-$  omg subscribe event triggers -a interval=<INTERVAL> -a initial_delay=<INITIAL_DELAY>
+$  omg subscribe event triggers -a interval=<INTERVAL> -a initialDelay=<INITIAL_DELAY>
 ```
-## License
-### [MIT](https://choosealicense.com/licenses/mit/)
 
-## Docker
-### Build
-```
-docker build -t microservice-cron .
-```
-### RUN
-```
-docker run -p 3000:3000 microservice-cron
-```
+**Note**: the OMG CLI requires [Docker](https://docs.docker.com/install/) to be installed.
+
+## License
+[MIT License](https://github.com/omg-services/cron/blob/master/LICENSE).
