@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.com/oms-services/cron.svg?branch=master)](https://travis-ci.com/oms-services/cron)
 [![codecov](https://codecov.io/gh/omg-services/cron/branch/master/graph/badge.svg)](https://codecov.io/gh/oms-services/cron)
 
-An OMG service for Cron, it is a time-based job scheduler in Unix-like computer operating systems.
+An OMS service for Cron, it is a time-based job scheduler in Unix-like computer operating systems.
 
 ## Direct usage in [Storyscript](https://storyscript.io/):
 
