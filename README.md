@@ -1,8 +1,8 @@
-# _Cron_ OMG Microservice
+# _Cron_ Open Microservice
 
-[![Open Microservice Guide](https://img.shields.io/badge/OMG%20Enabled-👍-green.svg?)](https://microservice.guide)
-[![Build Status](https://travis-ci.com/omg-services/cron.svg?branch=master)](https://travis-ci.com/omg-services/cron)
-[![codecov](https://codecov.io/gh/omg-services/cron/branch/master/graph/badge.svg)](https://codecov.io/gh/omg-services/cron)
+[![Open Microservices](https://img.shields.io/badge/OMS%20Enabled-👍-green.svg?)](https://openmicroservices.org)
+[![Build Status](https://travis-ci.com/oms-services/cron.svg?branch=master)](https://travis-ci.com/oms-services/cron)
+[![codecov](https://codecov.io/gh/omg-services/cron/branch/master/graph/badge.svg)](https://codecov.io/gh/oms-services/cron)
 
 An OMG service for Cron, it is a time-based job scheduler in Unix-like computer operating systems.
 
@@ -17,13 +17,13 @@ Curious to [learn more](https://docs.storyscript.io/)?
 
 ✨🍰✨
 
-## Usage with [OMG CLI](https://www.npmjs.com/package/omg)
+## Usage with [OMS CLI](https://www.npmjs.com/package/@microservices/oms)
 ##### Cron Trigger
 ```sh
-$  omg subscribe event triggers -a interval=<INTERVAL> -a initialDelay=<INITIAL_DELAY>
+$  oms subscribe event triggers -a interval=<INTERVAL> -a initialDelay=<INITIAL_DELAY>
 ```
 
-**Note**: the OMG CLI requires [Docker](https://docs.docker.com/install/) to be installed.
+**Note**: the OMS CLI requires [Docker](https://docs.docker.com/install/) to be installed.
 
 ## License
-[MIT License](https://github.com/omg-services/cron/blob/master/LICENSE).
+[MIT License](https://github.com/oms-services/cron/blob/master/LICENSE).
