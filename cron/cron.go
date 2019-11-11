@@ -90,9 +90,9 @@ func TriggerCron(responseWriter http.ResponseWriter, request *http.Request) {
 			}.AsV01(),
 			Data: "",
 		}
-		resp, err := cloudClient.Send(context.Background(), event)
+		resp, evt, err := cloudClient.Send(context.Background(), event)
 		if err != nil {
-			log.Printf("failed to send: %v", err)
+			log.Printf("failed to send: %v (%v)", err, evt)
 			fmt.Println(resp)
 		}
 
