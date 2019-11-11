@@ -1,15 +1,11 @@
-omg: 1
+oms: 1
 lifecycle:
   startup:
-    command: ["microservice-cron"]
+    command: ['cron']
 info:
   version: 1.0.0
   title: Cron
-  description: This is an cron service
-  contact:
-    name: Rohit Shetty
-    url: https://github.com/ht68rohit
-    email: rohits@heaptrace.com
+  description: This is a cron service
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
@@ -30,7 +26,7 @@ actions:
             in: requestBody
             required: false
             help: Delay time interval in seconds.
-        http: 
+        http:
           port: 3000
           subscribe:
             method: post

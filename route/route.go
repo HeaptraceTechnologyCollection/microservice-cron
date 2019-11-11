@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/heaptracetechnology/microservice-cron/cron"
+	"github.com/oms-services/cron/cron"
 )
 
 type Route struct {

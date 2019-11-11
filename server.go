@@ -1,7 +1,7 @@
 package main
 
 import (
-	route "github.com/heaptracetechnology/microservice-cron/route"
+	route "github.com/oms-services/cron/route"
 	"log"
 	"net/http"
 )

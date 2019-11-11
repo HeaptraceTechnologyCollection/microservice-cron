@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/cloudevents/sdk-go"
-	"github.com/heaptracetechnology/microservice-cron/result"
+	"github.com/oms-services/cron/result"
 	"github.com/robfig/cron"
 	"log"
 	"net/http"
