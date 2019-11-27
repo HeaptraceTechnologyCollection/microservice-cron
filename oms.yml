@@ -1,14 +1,19 @@
 oms: 1
-lifecycle:
-  startup:
-    command: ['cron']
 info:
   version: 1.0.0
   title: Cron
   description: This is a cron service
   license:
     name: MIT
-    url: https://opensource.org/licenses/MIT
+    url: 'https://opensource.org/licenses/MIT'
+  contact:
+    name: Open Microservices
+    url: 'https://openmicroservices.org'
+    email: core@openmicroservices.org
+lifecycle:
+  startup:
+    command:
+      - cron
 actions:
   event:
     help: Time-based job scheduler
